@@ -1,0 +1,106 @@
+<div class="container-fluid min-vh-100">
+    <header class="jumbotron text-lg-start">
+      <h1 class="display-4">Users</h1>
+    </header>
+    <div class=" mt-5 ">
+      <nav class="navbar bg-body-secondary  ps-1 ">
+        <form class="row" [formGroup]="searchForm">
+          <div class="col-4">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Email" formControlName="email" aria-label="Email" >
+            </div>
+            </div>
+          <div class="col-4">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Username" formControlName="username" aria-label="Username" >
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Full Name" formControlName="fullName" aria-label="Full Name" >
+            </div>
+          </div>
+        </form>
+      </nav>
+      
+      
+      <div class="table-responsive-xxl">
+      <table class="table  table-hover align-middle table-striped ">
+          <thead class="table-primary ">
+            <tr class="fs-5">
+              <th scope="col" class="sort" (click)="this.fetchUsers(1, this.pageSize, this.changeSort('email'), this.changeOrder())">Email 
+                  <i *ngIf="this.ascSort('email')" class="fas fa-arrow-up"></i>  
+                  <i *ngIf="this.descSort('email')" class="fas fa-arrow-down"></i>
+              </th>
+              <th scope="col" class="sort" (click)="this.fetchUsers(1, this.pageSize, this.changeSort('username'), this.changeOrder())">Username 
+                  <i *ngIf="this.ascSort('username')" class="fas fa-arrow-up"></i>  
+                  <i *ngIf="this.descSort('username')" class="fas fa-arrow-down"></i>
+              </th>
+              <th scope="col" class="sort" (click)="this.fetchUsers(1, this.pageSize, this.changeSort('full-name'), this.changeOrder())">Full Name 
+                  <i *ngIf="this.ascSort('full-name')" class="fas fa-arrow-up"></i>  
+                  <i *ngIf="this.descSort('full-name')" class="fas fa-arrow-down"></i>
+              </th>
+              <th scope="col" class="sort" (click)="this.fetchUsers(1, this.pageSize, this.changeSort('oauth2-user'), this.changeOrder())">Login type 
+                  <i *ngIf="this.ascSort('oauth2-user')" class="fas fa-arrow-up"></i>  
+                  <i *ngIf="this.descSort('oauth2-user')" class="fas fa-arrow-down"></i>
+              </th>
+              <th scope="col" class="sort"  (click)="this.fetchUsers(1, this.pageSize, this.changeSort('disabled'), this.changeOrder())">Status 
+                  <i *ngIf="this.ascSort('disabled')" class="fas fa-arrow-up"></i>  
+                  <i *ngIf="this.descSort('disabled')" class="fas fa-arrow-down"></i>
+              </th>
+              <th scope="col" class="sort"  (click)="this.fetchUsers(1, this.pageSize, this.changeSort('roles'), this.changeOrder())">Roles 
+                  <i *ngIf="this.ascSort('roles')" class="fas fa-arrow-up"></i>  
+                  <i *ngIf="this.descSort('roles')" class="fas fa-arrow-down"></i>
+              </th>
+              <th scope="col" class="sort"  (click)="this.fetchUsers(1, this.pageSize, this.changeSort('certification-status'), this.changeOrder())">Certification Status 
+                  <i *ngIf="this.ascSort('certification-status')" class="fas fa-arrow-up"></i>  
+                  <i *ngIf="this.descSort('certification-status')" class="fas fa-arrow-down"></i>
+              </th>
+          </tr>
+          
+          
+          </thead>
+          <tbody >
+              <tr *ngFor="let user of users.items" class="fs-6 " (click)="this.openUserModifyModal(user)">
+                  <td scope="row">{{user.email}}</td>
+                  <td>{{user.username}}</td>
+                  <td>{{user.full_name}}</td>
+                  <td>
+                    <span *ngIf="user.oauth2_user">
+                        OAuth2 
+                    </span>
+                    <span *ngIf="!user.oauth2_user">
+                      Standard
+                    </span>
+                </td>
+                <td>
+                  <span *ngIf="user.disabled" class="text-danger  ">
+                    <strong>   Disabled </strong>
+                  </span>
+                  <span *ngIf="!user.disabled">
+                 Active 
+                  </span>
+              </td>
+                  <td>
+                    {{   this.getUserRoles(user) }}
+                  </td>                
+                  <td>
+                    <span class="badge rounded px-2 py-1" 
+                          [ngClass]="{
+                              'bg-warning': user.certification_status == 'Pending', 
+                              'bg-success': user.certification_status == 'Approved', 
+                              'bg-danger': user.certification_status == 'Rejected', 
+                              'bg-primary': !user.certification_status
+                          }"> 
+                        {{ user.certification_status || 'Not Certified' }}
+                    </span>
+                </td>
+              </tr>
+          </tbody>
+      </table>
+      <nav aria-label="Users navigation" class=" d-flex justify-content-center">
+        <ngb-pagination [collectionSize]="users.total" [page]="users.page" [pageSize]="users.size" (pageChange)="this.fetchUsers($event, this.pageSize, this.sort, this.order)"/>
+      </nav>
+  </div></div>
+    </div>
+

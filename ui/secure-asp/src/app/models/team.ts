@@ -1,0 +1,2 @@
+import { OwnershipInput } from "./ownership";
+

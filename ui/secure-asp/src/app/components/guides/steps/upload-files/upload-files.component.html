@@ -1,0 +1,144 @@
+<div class="container-fluid min-vh-100 ">
+    <!-- Header Section -->
+    <div class="container my-5 py-4">
+        <h1 class="text-center display-5 mb-4"><i class="fas fa-cloud-upload-alt text-info me-2"></i>Uploading and Sharing Signed Files</h1>
+        <p class="text-center lead text-muted">In this tutorial, you'll learn how to securely upload your signed files to the server and share them with trusted recipients. Follow each step carefully to ensure secure handling and distribution of your files.</p>
+
+        <!-- Step 1: Adding Certificate -->
+        <div class="mt-5">
+            <h2 class="mb-3">Adding Your Certificate</h2>
+            <p>To start sharing files, you’ll first need to upload your certificate. Log in, navigate to <strong>Your Encodings</strong>, and click on the "Add Certificate" button. </p>
+            
+            <!-- Screenshot Image for Step 1 -->
+            <div class="text-center mt-4">
+                <img src="screenshots/encoding_page.png" alt="Add Certificate Screenshot" class="img-fluid rounded shadow">
+                <p class="text-muted mt-2">Example of "Add Certificate" button in the Certification section</p>
+            </div>
+        </div>
+
+      <!-- Step 2: Adding Encoding Files -->
+<div class="mt-5">
+    <h2 class="mb-3"> Adding Encoding Files</h2>
+    <p>Once your certificate is uploaded, you can begin adding your signed encoding files. Follow these steps to securely upload and configure your encodings:</p>
+
+    <!-- Encoding Step Images -->
+    <div class="mt-4">
+        <h4>Phase 1: General Info</h4>
+        <div class="alert alert-primary text-center mt-4" role="alert">
+            <i class="fas fa-info-circle me-2"></i>
+            Note: If an encoding is set to public, anyone with a valid, server-signed certificate will be able to access it.
+        </div>
+        
+        <p>Start by adding basic information for your encoding file. Here, you can provide a name, description, and set the encoding to public or private, depending on your sharing preferences.</p>
+        <div class="text-center">
+            <img src="screenshots/new_encoding_first_step.png" alt="Encoding General Info Screenshot" class="img-fluid rounded shadow">
+            <p class="text-muted mt-2">Example of General Info screen for encoding setup</p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h4>Phase 2: Upload Files</h4>
+        <p>Upload both the main encoding file and the signed version of the file, which was signed with your private key. This step ensures the authenticity and security of the uploaded file.</p>
+        <div class="text-center">
+            <img src="screenshots/new_encoding_second_step.png" alt="Upload Signed File Screenshot" class="img-fluid rounded shadow">
+            <p class="text-muted mt-2">Example of Upload screen for the main and signed file</p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h4>Phase 3: Team Access</h4>
+        <p>Add team members with whom you wish to share the encoding. Each user will be able to use their own certificate to access the encoding, ensuring secure, certificate-based access for authorized users only.</p>
+        <div class="text-center">
+            <img src="screenshots/new_encoding_third_step.png" alt="Team Access Screenshot" class="img-fluid rounded shadow">
+            <p class="text-muted mt-2">Example of Team Access configuration screen</p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h4>Phase 4: Add Tags</h4>
+        <p>Tags allow you to categorize your encoding files, making it easier for others to understand the purpose of each encoding. Tags can help organize and describe your encodings more effectively.</p>
+        <div class="text-center">
+            <img src="screenshots/new_encoding_four_step.png" alt="Add Tags Screenshot" class="img-fluid rounded shadow">
+            <p class="text-muted mt-2">Example of adding tags to organize encodings</p>
+        </div>
+    </div>
+</div>
+<!-- Step 3: Viewing and Editing Your Encoding -->
+<div class="mt-5">
+    <h2 class="mb-3">Viewing and Editing Your Encoding</h2>
+    <p>After uploading your encoding, you can view its details and adjust parameters as needed. Follow these steps to access and edit your encoding:</p>
+
+    <!-- Viewing Encoding Screenshot -->
+    <div class="mt-4">
+        <h4>Phase 1: Viewing Your Encoding</h4>
+        <p>Navigate to the encoding details page to view the encoding’s information, including its name, description, tags, and access settings.</p>
+        <div class="text-center">
+            <img src="screenshots/new_encoding.png" alt="View Encoding Screenshot" class="img-fluid rounded shadow">
+            <p class="text-muted mt-2">Example of viewing encoding details</p>
+        </div>
+    </div>
+
+    <!-- Editing Encoding Parameters Screenshot -->
+    <div class="mt-4">
+        <h4>Phase 2: Editing Encoding Parameters</h4>
+        <p>To modify your encoding, go to the settings section and adjust parameters such as the name, description, visibility, and tags. Once edited, save your changes to update the encoding settings.</p>
+        <div class="text-center">
+            <img src="screenshots/encoding_setting.png" alt="Edit Encoding Parameters Screenshot" class="img-fluid rounded shadow">
+            <p class="text-muted mt-2">Example of editing encoding parameters screen</p>
+        </div>
+    </div>
+</div>
+<!-- Step 3: Downloading the Encrypted File of Your Encoding -->
+<div class="mt-5">
+    <h2 class="mb-3">Downloading the Encrypted File of Your Encoding</h2>
+    <p>Once your encoding is set up and securely uploaded, you can download the encrypted version of the file. You can access the original file using your server-signed certificate, ensuring secure access to your signed encoding.</p>
+
+    <!-- Download Encrypted File Screenshot -->
+    <div class="text-center mt-4">
+        <img src="screenshots/encoding_file_get.png" alt="Download Encrypted File Screenshot" class="img-fluid rounded shadow">
+        <p class="text-muted mt-2">Example of encrypted file download screen</p>
+    </div>
+</div>
+
+
+
+
+<!-- FAQ Section using ng-bootstrap Accordion -->
+<h2 class="text-center mb-4"><i class="fas fa-question-circle me-2"></i>Frequently Asked Questions</h2>
+<div ngbAccordion class="mt-5 mb-5 mx-3">
+    <div ngbAccordionItem [collapsed]="openFaq!=1" (click)="openFaq=1">
+        <!-- FAQ 1 -->
+        <h2 ngbAccordionHeader id="faq-1">
+            <button ngbAccordionButton>How can I share the encoding?</button>
+        </h2>
+        <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+                <ng-template>
+                    After configuring your encoding, you can securely share it in two ways:
+                    <ul>
+                        <li><strong>Public Encoding:</strong> If the encoding is set to public, you can simply share the link associated with it.</li>
+                        <li><strong>Private Encoding:</strong> If the encoding is set to private, you’ll need to add the user to your team. Once added, the encoding will appear on the user’s dashboard</li>
+                    </ul>
+                </ng-template>
+            </div>
+        </div>
+        
+    </div>
+    <div ngbAccordionItem [collapsed]="openFaq!=2" (click)="openFaq=2">
+        <!-- FAQ 2 -->
+        <h2 ngbAccordionHeader id="faq-2">
+            <button ngbAccordionButton>Can I modify the encoding files after uploading?</button>
+        </h2>
+        <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+                <ng-template>
+                    Yes, you can edit encoding settings and files even after uploading. This includes changing access permissions, adjusting tags, or updating the visibility to better manage who can access your encoding files.
+                </ng-template>
+            </div>
+        </div>
+
+
+
+</div>
+
+

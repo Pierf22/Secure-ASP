@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">New Certification Request</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="form">
+        <label for="floatingSelect">Document type <span class="text-danger" title="required">*</span></label>
+  
+        <div class="input-group mb-3">
+          <select class="form-select" id="floatingSelect" aria-label="Select document type" (change)="onDocumentTypeChange($event)">
+            <option selected value="">Select a document type</option>
+            <option *ngFor="let document of documentTypes" [value]="document">{{ document }}</option>
+          </select>
+          
+        </div>
+        <label for="inputGroupFileFront">Document front <span class="text-danger" title="required">*</span></label>
+        <div class="input-group mb-3">
+          <input  accept=".jpg,.jpeg,.png,.pdf" type="file" class="form-control"  id="inputGroupFileFront" (change)="uploadFrontFile($event)" [ngClass]="{'is-invalid':form.get('document_front')?.hasError('max_size')}">
+          <div class="invalid-feedback" *ngIf="form.get('document_front')?.hasError('max_size')">
+            File size exceeds the limit
+          </div>
+  
+        </div>
+        <label for="inputGroupFileBack">Document back <span class="text-danger" title="required">*</span></label>
+        <div class="input-group mb-3">
+          <input  accept=".jpg,.jpeg,.png,.pdf" type="file" class="form-control" aria-describedby="documentHelpBlock"  id="inputGroupFileBack" (change)="uploadBackFile($event)" [ngClass]="{'is-invalid':form.get('document_back')?.hasError('max_size')}">
+          <div id="documentHelpBlock" class="form-text">
+            Your documents must be in PNG, JPG, or PDF format and not exceed 10MB.
+          </div>
+          <div class="invalid-feedback"   *ngIf="form.get('document_back')?.hasError('max_size')">
+            File size exceeds the limit
+          </div>
+  
+        </div>
+      </form>
+  
+    </div>
+    {{form.errors }}
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="saveCertificationRequest()">Save</button>
+    </div>
+</div>

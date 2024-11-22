@@ -1,0 +1,118 @@
+<div class="container-fluid min-vh-100 ">
+    <!-- Python Installation Note -->
+    <div class="alert alert-info text-center mt-4" role="alert">
+        <i class="fas fa-info-circle me-2"></i>
+        Note: Ensure that Python is installed on your system before proceeding with this tutorial. You can download it from <a href="https://www.python.org/downloads/" target="_blank">python.org</a>.
+    </div>
+
+    <div class="container my-5 py-4">
+        <!-- Header Section -->
+        <h1 class="text-center display-5 mb-4"><i class="fas fa-certificate text-success me-2"></i>Creating Your CSR and Obtaining Your Certificate</h1>
+        <p class="text-center lead text-muted">In this tutorial, you'll learn how to create a Certificate Signing Request (CSR) and obtain your certificate to validate your identity securely. Follow each step carefully to complete the setup process.</p>
+
+        <!-- Security Alert -->
+        <div class="alert alert-warning text-center mt-4" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            Never share your private key with unauthorized parties. Ensure they are stored securely.
+        </div>
+
+        <!-- Tutorial Content Section -->
+        <div class="mt-5">
+            <h2 class="mb-3">Step 1: Install Required Libraries</h2>
+            <p>For this tutorial, we’ll use Python with the cryptography package. Make sure it is installed by running:</p>
+            <pre class="code p-3 rounded"><code>pip install cryptography</code></pre>
+
+            <h2 class="mt-5 mb-3">Step 2: Create Your CSR</h2>
+            <p>Once the cryptography library is installed, use the following Python script to generate a CSR. This script will create a CSR file that you can submit to the server from your account to obtain your certificate.</p>
+
+            <!-- Download Button -->
+            <div class="text-center mt-4">
+                <a href="scripts/generating_csr.py" download="generating_csr.py" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-download me-2"></i>Download CSR Script
+                </a>
+                
+            </div>
+
+            <!-- Required Parameters Section -->
+            <div class="mt-5">
+                <h3>Parameters</h3>
+                <ul>
+                    <li><strong>private_key_file</strong> (required): Path to your private key file in PEM format, which is used to sign the CSR.</li>
+                    <li><strong>-d, --directory</strong> (optional): Specifies the directory where the generated CSR will be saved. If not provided, the CSR will be saved in the current directory.</li>
+                </ul>
+            </div>
+
+            <!-- Example Usage Section -->
+            <div class="mt-4">
+                <h3>Example Usage</h3>
+                <p>To generate a CSR using a specific private key and save it to a designated folder, use the following command:</p>
+                <pre class="code p-3 rounded"><code>python generate_csr.py path/to/private_key.pem --directory /desired/path/to/save/csr</code></pre>
+                <p>If no directory is specified, the CSR will automatically be saved in the current directory:</p>
+                <pre class="code p-3 rounded"><code>python generate_csr.py path/to/private_key.pem</code></pre>
+            </div>
+        </div>
+        <!-- Step 3: Uploading the CSR Request -->
+        <div class="mt-5">
+            <h2 class="mt-5 mb-3">Step 3: Uploading the CSR Request</h2>
+            <!-- Warning Alert -->
+<div class="alert alert-warning text-center mt-4" role="alert">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    Warning: If you already have an existing certificate, uploading a new CSR will invalidate your old certificate. Any files signed with the old certificate will be removed from the server, as they are no longer considered accessible.
+</div>
+            <p>After generating the CSR, you’ll need to upload it to the server to complete the certificate request process. Log in to your account, navigate to <strong>Profile &gt; Certification</strong>, and submit the CSR file. Once you press "Upload," the server will process your request and allow you to download your certificate, which you can use to securely sign and authenticate your files.</p>
+
+            <!-- Screenshot Image -->
+            <div class="text-center mt-4">
+                <img src="screenshot/add_cert.png" alt="Upload CSR Screenshot" class="img-fluid rounded shadow">
+                <p class="text-muted mt-2">Example of CSR upload screen</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- FAQ Section using ng-bootstrap Accordion -->
+    <h2 class="text-center mb-4"><i class="fas fa-question-circle me-2"></i>Frequently Asked Questions</h2>
+    <div ngbAccordion class="mt-5 mb-5 mx-3">
+        <div ngbAccordionItem [collapsed]="openFaq!=1" (click)="openFaq=1">
+            <!-- FAQ 1 -->
+            <h2 ngbAccordionHeader id="faq-1">
+                <button ngbAccordionButton>What is a CSR, and why do I need it?</button>
+            </h2>
+            <div ngbAccordionCollapse>
+                <div ngbAccordionBody>
+                    <ng-template>
+                        A Certificate Signing Request (CSR) is a request for a digital certificate from a Certificate Authority (CA). Its permit to receive a signed certificate without revealing your private key. The CSR contains your public key and information about your organization, which the CA uses to validate your identity.
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+
+        <div ngbAccordionItem [collapsed]="openFaq!=2" (click)="openFaq=2">
+            <!-- FAQ 2 -->
+            <h2 ngbAccordionHeader id="faq-2">
+                <button ngbAccordionButton>Why do I need to provide a private key file?</button>
+            </h2>
+            <div ngbAccordionCollapse>
+                <div ngbAccordionBody>
+                    <ng-template>
+                        The private key file is needed to sign the CSR, ensuring that the request is authentic and linked to you. This key doesn’t encrypt any data; its sole purpose in this process is to securely generate the CSR so that a certificate authority can verify your identity and issue the certificate to the correct entity.
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+
+        <div ngbAccordionItem [collapsed]="openFaq!=3" (click)="openFaq=3">
+            <!-- FAQ 3 -->
+            <h2 ngbAccordionHeader id="faq-3">
+                <button ngbAccordionButton>What should I do after creating the CSR?</button>
+            </h2>
+            <div ngbAccordionCollapse>
+                <div ngbAccordionBody>
+                    <ng-template>
+                        After creating the CSR, submit it to the server by access to your profile after login to obtain a signed certificate. The server will validate your information and, issue the certificate, which you can then use to upload your signed encodings securely.
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

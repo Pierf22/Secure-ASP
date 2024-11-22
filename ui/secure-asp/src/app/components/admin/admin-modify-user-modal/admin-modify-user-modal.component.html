@@ -1,0 +1,143 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close(modified)"></button>
+</div>
+<div class="modal-body ">
+    <div class="grid-nav ">
+    <div ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills flex-column " orientation="vertical" >
+        <ng-container ngbNavItem="top">
+            <button ngbNavLink>Data</button>
+            <ng-template ngbNavContent>
+                <form [formGroup]="formUserData"  class="needs-validation">
+                    <div class="mb-3">
+                      <label for="emailForm" class="form-label">Email address</label>
+                      <input maxlength="320" type="email" class="form-control" formControlName="email" id="emailForm" placeholder="name@example.com" [ngClass]="{'is-invalid':formUserData.get('email')?.invalid && formUserData.get('email')?.touched}">
+                      <div  class="invalid-feedback">
+                        The email is required and has to be a valid email.
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="usernameForm" class="form-label">Username</label>
+                        <input aria-describedby="usernameHelpBlock" maxlength="32" type="email" class="form-control" formControlName="username" id="usernameForm" [ngClass]="{'is-invalid':formUserData.get('username')?.invalid && formUserData.get('username')?.touched}">
+                      <div id="usernameHelpBlock" class="form-text">
+                        The username must be 6-32 characters long  and can contain letters, numbers, and dash, and has to start with a letter.
+                      </div>
+                      <div *ngIf="formUserData.get('username')?.hasError('minlength') || formUserData.get('username')?.hasError('required')" class="invalid-feedback">
+                        The username is required and cannot be under 6 characters.
+                      </div>
+                      <div *ngIf="formUserData.get('username')?.hasError('pattern') && !(formUserData.get('username')?.hasError('minlength'))" class="invalid-feedback">
+                        The username is invalid.
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="full-name-form" class="form-label">Full name</label>
+                        <input  maxlength="64" type="text" class="form-control" formControlName="fullName" id="full-name-form" [ngClass]="{'is-invalid':formUserData.get('fullName')?.invalid && formUserData.get('fullName')?.touched}">
+                        <div *ngIf="formUserData.get('fullName')?.hasError('minlength') || formUserData.get('fullName')?.hasError('required')" class="invalid-feedback">
+                          The full name is required and cannot be under 2 characters.
+                        </div>
+                        <div *ngIf="formUserData.get('fullName')?.hasError('pattern') && !(formUserData.get('fullName')?.hasError('minlength'))" class="invalid-feedback">
+                          The full name has to start with a letter and can only contain letters, and spaces.
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="passwordForm" class="form-label d-flex justify-content-between">
+                          Password
+                        </label>
+                        <input maxlength="64" aria-describedby="passwordHelpBlock" type="password" class="form-control" [ngClass]="{'is-invalid':formUserData.get('password')?.invalid && formUserData.get('password')?.touched}" formControlName="password" id="passwordForm"  >
+                        <div id="passwordHelpBlock" class="form-text">
+                          The password must be 8-64 characters long and must contain one uppercase letter, one lowercase letter, one number, and one special character.
+                        </div>
+                        <div *ngIf="formUserData.get('password')?.hasError('minlength') || formUserData.get('password')?.hasError('required')" class="invalid-feedback">
+                          The password is required and cannot be under 8 characters.
+                        </div>
+                        <div *ngIf="formUserData.get('password')?.hasError('pattern') && !(formUserData.get('password')?.hasError('minlength'))" class="invalid-feedback">
+                          The password is invalid.
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-check-label" for="disabledSwitch">Disabled</label>
+                        <div class="form-check ">
+                            <input class="form-check-input" formControlName="disabled" type="checkbox"  role="switch" id="disabledSwitch">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div formArrayName="roles"  >
+                        <label class="form-check-label" for="roles">Roles</label>
+                        <div class="form-check mb-3" *ngFor="let roleCtrl of rolesFormArray.controls let i = index">
+                            <div [formGroupName]="i">
+                            <input 
+                                class="form-check-input" 
+                                type="checkbox"  
+                                formControlName="checked"
+                                id="role{{i}}">
+                                <label class=" form-check-label ms-2 pt-1" for="roles">{{roleCtrl.get("name")?.value.replace("ROLE_", "").toLowerCase()}}</label>
+                            </div>
+                    </div>
+                    <div class="mb-3 justify-content-end d-flex me-3">
+                        <button type="button" class="btn btn-success" (click)="modifyUser()" [disabled]="noChangeFormData() || noRolesSelected() || formUserData.invalid">Save</button>
+                        </div>
+                       </div>
+                       </div>
+                    </form>
+                    </ng-template>
+        </ng-container>
+            <ng-container ngbNavItem="bottom">
+                <button ngbNavLink>Certification</button>
+                <ng-template ngbNavContent>
+                  <div *ngIf="!certificationRequest" class="d-flex justify-content-center align-items-center " style="height: 75vh;">
+                    <div class="text-center p-5   m-2">
+                      <h1 class="display-4 font-weight-bold text-primary">No Certification Request Found</h1>
+                      <p class="lead text-muted mt-3">It seems that there is no certification request for this user.</p>
+                    </div>
+                  </div>
+                  <div *ngIf="certificationRequest" >
+                    <h4 >Documents</h4>
+                    <div  class="d-flex gap-4 mb-3">
+                      <a [href]="front_url" target="_blank"  class="d-flex align-items-center text-decoration-none">
+                        <i class="fas fa-file-alt me-2"></i>
+                        <span>Document Front</span>
+                      </a>
+                      <a [href]="back_url" target="_blank"   class="d-flex align-items-center text-decoration-none">
+                        <i class="fas fa-file-alt me-2"></i>
+                        <span>Document Back</span>
+                      </a>
+                    </div>
+                    
+
+                    <form [formGroup]="formCertificationData">
+                      <div class="mb-3 ">
+                        <label class="form-check-label ">Status</label>
+                        <div class="d-flex justify-content-between flex-column">
+                        <div *ngFor="let stat of status" class="form-check mb-4 me-4 mt-2 ">
+                          <input class="form-check-input" formControlName="status" type="radio" [value]="stat" id="{{stat}}Radio" >
+                          <label class="form-check-label mx-1 mt-1" for="{{stat}}Radio">{{stat}}</label>
+                        </div>
+                      </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="denialTextArea" class="form-label">Denial Reason</label>
+                        <textarea class="form-control " formControlName="denialReason" id="denialTextArea" rows="3" style="max-width: 90%;" [readOnly]="updateDenialReasonValidator()" ></textarea>
+                      </div>
+                      <div class="mb-3 justify-content-end d-flex me-3">
+                      <button type="button" class="btn btn-success" (click)="modifyCertification()" [disabled]="noChangeFormCertification()">Save</button>
+                      </div>
+                </form>
+                  </div>
+                  
+                
+                
+                    </ng-template>
+                    </ng-container>
+
+    </div>
+    <div [ngbNavOutlet]="nav" class="ms-4"></div>
+</div>
+    
+       
+    
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="activeModal.close(modified)">Close</button>
+    
+
+</div>
+

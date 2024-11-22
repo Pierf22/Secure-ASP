@@ -1,0 +1,45 @@
+<div class="container-fluid min-vh-100">
+    <header class="jumbotron text-lg-start">
+      <h1 class="display-4">Admin Dashboard</h1>
+    </header>
+    <div class="row mt-4">
+        <div class="col-md-6 col-sm-12 mb-3">
+          <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h3 class="mb-0">Certifications</h3>
+            </div>
+            <div class="card-body  ">
+              <div class="certification-chart">
+                <canvas id="certificationChart">{{ certificationChart }}</canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 mb-3">
+            <div class="card shadow-sm">
+              <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Encodings</h3>
+              </div>
+              <div class="card-body ">
+                <div class="encodings-chart">
+                  <canvas id="encodingsChart">{{ encodingsChart }}</canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-4 mb-4 ">
+            <div class="card shadow-sm">
+              <div class="card-header bg-primary text-white">
+                <h3 class="mb-0 ">Users</h3>
+              </div>
+              <div class="card-body mb-3 ">
+                <div class="user-chart min-vh-100">
+                  <canvas id="userChart">{{ userChart }}</canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+
+</div>
+      

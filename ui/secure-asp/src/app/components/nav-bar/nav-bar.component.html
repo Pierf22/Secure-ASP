@@ -1,0 +1,125 @@
+<div *ngIf="show">
+<header class="sticky-top">
+  <nav class="navbar bg-body-secondary p-0">
+    <div class="container-fluid px-2">
+      <a class="navbar-brand p-0" routerLink="/home">
+        <img 
+          src="favicon.ico" 
+          alt="logo secure-asp" 
+          width="70" 
+          height="75" 
+          style="margin-right: 15px;" 
+        > 
+        <img 
+          *ngIf="!theme.darkMode()" 
+          src="/logos/secure-asp-high-resolution-name-black-transparent.png" 
+          alt="name secure-asp" 
+          width="240" 
+          height="65"
+          class="responsive-img"
+        >
+        <img 
+          *ngIf="theme.darkMode()" 
+          src="/logos/secure-asp-high-resolution-name-white-transparent.png" 
+          alt="name secure-asp" 
+          width="240" 
+          height="65"
+          class="responsive-img"
+        >
+      </a>
+      <button class="navbar-toggler" (click)="open(content)" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon display-6"></span>
+      </button>
+    </div>
+  </nav>
+</header>
+<ng-template #content let-offcanvas  style="width: 40%;">
+  <div class="offcanvas-header bg-body-secondary ">
+    <h3 class="offcanvas-title" id="offcanvas-basic-title">Menu</h3>
+    <button type="button" class="btn-close " aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+  </div>
+  <div class="offcanvas-body  ">
+    <ul class="navbar-nav d-grid gap-3 pb-3">
+      <li class="nav-item border-start border-4 border-primary ">
+        <a class="d-flex nav-link align-items-center justify-content-between position-relative" routerLink="/home" (click)="offcanvas.dismiss('Cross click')">
+          <i class="fa-solid fa-house fa-lg me-2 ms-2"></i> Home
+          <i class="fa-solid fa-arrow-right ms-auto"></i>
+        </a>
+      </li>
+
+      <li class="nav-item border-start border-4 border-primary" *ngIf="!auth.isAuthenticated()">
+        <a class="d-flex nav-link align-items-center justify-content-between position-relative" routerLink="/login" (click)="offcanvas.dismiss('Cross click')">
+          <i class="fa-solid fa-sign-in-alt fa-lg me-2 ms-2"></i> Login
+          <i class="fa-solid fa-arrow-right ms-auto"></i>
+        </a>
+      </li>
+
+      <li class="nav-item border-start border-4 border-primary" *ngIf="!auth.isAuthenticated()">
+        <a class="d-flex nav-link align-items-center justify-content-between position-relative" routerLink="/sign-up" (click)="offcanvas.dismiss('Cross click')">
+          <i class="fa-solid fa-user-plus fa-lg me-2 ms-2"></i> Sign Up
+          <i class="fa-solid fa-arrow-right ms-auto"></i>
+        </a>
+      </li>
+   
+
+      <li class="nav-item border-start border-4 border-primary" *ngIf="auth.isAuthenticated()">
+        <a class="d-flex nav-link align-items-center justify-content-between position-relative" routerLink="/profile" (click)="offcanvas.dismiss('Cross click')">
+          <i class="fa-solid fa-user fa-lg me-2 ms-2"></i> Profile
+          <i class="fa-solid fa-arrow-right ms-auto"></i>
+        </a>
+      </li>
+      <li class="nav-item border-start border-4 border-primary" *ngIf="auth.isUser()">
+        <a class="d-flex nav-link align-items-center justify-content-between position-relative" routerLink="/encodings" (click)="offcanvas.dismiss('Cross click')">
+          <i class="fa-solid fa-file fa-lg me-2 ms-2"></i> Encodings
+          <i class="fa-solid fa-arrow-right ms-auto"></i>
+        </a>
+      </li>
+
+      <li class="nav-item border-start border-4 border-primary" *ngIf="auth.isAdmin()">
+        <a class="d-flex nav-link align-items-center justify-content-between position-relative" routerLink="/dashboard/admin" (click)="offcanvas.dismiss('Cross click')">
+          <i class="fa-solid fa-user-shield fa-lg me-2 ms-2"></i> Admin
+          <i class="fa-solid fa-arrow-right ms-auto"></i>
+        </a>
+      </li>
+      <li class="nav-item border-start border-4 border-primary" *ngIf="auth.isAdminAndUser()">
+        <a class="d-flex nav-link align-items-center justify-content-between position-relative" routerLink="/dashboard" (click)="offcanvas.dismiss('Cross click')">
+          <i class="fa-solid fa-file fa-lg me-2 ms-2"></i> Your encodings
+          <i class="fa-solid fa-arrow-right ms-auto"></i>
+        </a>
+      </li>
+
+      <li class="nav-item border-start border-4 border-primary" *ngIf="auth.isAdmin()">
+        <a class="d-flex nav-link align-items-center justify-content-between position-relative" routerLink="/users" (click)="offcanvas.dismiss('Cross click')">
+          <i class="fa-solid fa-users fa-lg me-2 ms-2"></i> Users
+          <i class="fa-solid fa-arrow-right ms-auto"></i>
+        </a>
+      </li>
+
+      <li class="nav-item border-start border-4 border-primary" *ngIf="auth.isAuthenticated()">
+        <a class="d-flex nav-link align-items-center justify-content-between position-relative" (click)="doLogout(offcanvas)">
+          <i class="fa-solid fa-sign-out-alt fa-lg me-2 ms-2"></i> Logout
+          <i class="fa-solid fa-arrow-right ms-auto"></i>
+        </a>
+      </li>
+      <li class="nav-item border-start border-4 border-primary">
+        <a class="d-flex nav-link align-items-center justify-content-between position-relative" routerLink="/guides" (click)="offcanvas.dismiss('Cross click')">
+          <i class="fa-solid fa-book-open fa-lg me-2 ms-2"></i> Guides
+          <i class="fa-solid fa-arrow-right ms-auto"></i>
+        </a>
+      </li>
+      
+
+      <li class="nav-item border-start border-4 border-primary">
+        <a *ngIf="!theme.darkMode()" class="d-flex nav-link align-items-center justify-content-between position-relative" (click)="theme.changeTheme()">
+         <span class="ms-2">Dark Theme</span> <i class="fa-solid fa-moon fa-lg me-2 " ></i>
+        </a>
+        <a *ngIf="theme.darkMode()" class="d-flex nav-link align-items-center justify-content-between position-relative" (click)="theme.changeTheme()">
+          <span class="ms-2">Light Theme </span> <i class="fa-solid fa-sun fa-lg me-2 "></i>
+        </a>
+      </li>
+    </ul>
+
+  </div>
+
+</ng-template>
+</div>

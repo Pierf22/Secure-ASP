@@ -1,0 +1,6 @@
+.encodingName{
+    text-decoration: none;
+}
+.encodingName:hover{
+    text-decoration: underline;
+}

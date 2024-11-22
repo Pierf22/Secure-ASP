@@ -1,0 +1,77 @@
+<div class="container-fluid  min-vh-100 pt-5 ">
+  <div class="container-md  p-5 rounded shadow-lg bg-body-secondary mb-5">
+    <header class="text-center mb-4">
+      <h1 class="text-primary"><strong>Welcome </strong></h1>
+      <p>Thank you for registering. We are delighted to have you with us!</p>    </header>
+    <form [formGroup]="form" (ngSubmit)="signUp()" class="needs-validation">
+      <div class="mb-3">
+        <label for="emailForm" class="form-label">Email address</label>
+        <input maxlength="320" type="email" class="form-control" formControlName="email" id="emailForm" placeholder="name@example.com" [ngClass]="{'is-invalid':form.get('email')?.invalid && form.get('email')?.touched}">
+        <div  class="invalid-feedback">
+          The email is required and has to be a valid email.
+        </div>
+      </div>
+
+      <div class="mb-3">
+          <label for="usernameForm" class="form-label">Username</label>
+          <input aria-describedby="usernameHelpBlock" maxlength="32" type="email" class="form-control" formControlName="username" id="usernameForm" [ngClass]="{'is-invalid':form.get('username')?.invalid && form.get('username')?.touched}">
+        <div id="usernameHelpBlock" class="form-text">
+          Your username must be 6-32 characters long  and can contain letters, numbers, and dash, and has to start with a letter.
+        </div>
+        <div *ngIf="form.get('username')?.hasError('minlength') || form.get('username')?.hasError('required')" class="invalid-feedback">
+          The username is required and cannot be under 6 characters.
+        </div>
+        <div *ngIf="form.get('username')?.hasError('pattern') && !(form.get('username')?.hasError('minlength'))" class="invalid-feedback">
+          The username is invalid.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="full-name-form" class="form-label">Full name</label>
+        <input  maxlength="64" type="text" class="form-control" formControlName="fullName" id="full-name-form" [ngClass]="{'is-invalid':form.get('fullName')?.invalid && form.get('fullName')?.touched}">
+        <div *ngIf="form.get('fullName')?.hasError('minlength') || form.get('fullName')?.hasError('required')" class="invalid-feedback">
+          The full name is required and cannot be under 2 characters.
+        </div>
+        <div *ngIf="form.get('fullName')?.hasError('pattern') && !(form.get('fullName')?.hasError('minlength'))" class="invalid-feedback">
+          The full name has to start with a letter and can only contain letters, and spaces.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="passwordForm" class="form-label d-flex justify-content-between">
+          Password
+        </label>
+        <input maxlength="64" aria-describedby="passwordHelpBlock" type="password" class="form-control" [ngClass]="{'is-invalid':form.get('password')?.invalid && form.get('password')?.touched}" formControlName="password" id="passwordForm"  >
+        <div id="passwordHelpBlock" class="form-text">
+          Your password must be 8-64 characters long and must contain one uppercase letter, one lowercase letter, one number, and one special character.
+        </div>
+        <div *ngIf="form.get('password')?.hasError('minlength') || form.get('password')?.hasError('required')" class="invalid-feedback">
+          The password is required and cannot be under 8 characters.
+        </div>
+        <div *ngIf="form.get('password')?.hasError('pattern') && !(form.get('password')?.hasError('minlength'))" class="invalid-feedback">
+          The password is invalid.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="confirmPasswordForm" class="form-label d-flex justify-content-between">
+          Confirm Password
+        </label>
+        <input maxlength="64"  type="password" class="form-control" [ngClass]="{'is-invalid':form.get('confirmPassword')?.invalid }" formControlName="confirmPassword" id="confirmPasswordForm"  >
+        <div  class="invalid-feedback">
+          The passwords do not match.
+        </div>
+      </div>
+        <div class="d-grid">
+        <button type="submit" class="btn btn-primary btn-lg" [disabled]="form.invalid">Sign up</button>
+      </div>
+    </form>
+    <div class="d-flex align-items-center my-4">
+      <hr class="flex-grow-1">
+      <span class="mx-2">or</span>
+      <hr class="flex-grow-1">
+    </div>
+    <div class="text-center mt-4">
+      <button class="btn  btn-lg" (click)="this.auth.oauthLogin()" [ngClass]="{'btn-outline-light':theme.darkMode(), 'btn-outline-dark':!theme.darkMode()}">
+        <i class="fa-brands fa-github"></i> Login via GitHub
+      </button>
+    </div>
+  </div>
+</div>

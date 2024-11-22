@@ -1,0 +1,51 @@
+<div class="container rounded shadow-lg">
+    <div class="row"  *ngIf="!this.hasACertification()">
+      <div class="col-md-8 offset-md-2 text-center mb-3 mt-3">
+        <h1>Certification Required</h1>
+        <i class="fas fa-lock fa-5x text-warning"></i>
+        <p>For security reasons, you need to complete the certification process in order to upload and sign your ASP encodings.</p>
+
+        <button class="btn btn-primary btn-lg" (click)="openNewCertificationModal()" >Get certified now</button>
+      </div>
+      <div class="mb-4 text-center">
+        <h2 class="h5">Why Certification?</h2>
+        <p>Certification ensures that only authorized users can upload and sign ASP encodings. This process protects sensitive data and maintains the integrity of our systems.</p>
+      </div>
+    </div>
+    <div class="row mt-4" *ngIf="this.hasACertification()">
+      <div class="col-md-12 mt-2 mb-2">
+        <div class="card border-primary  ">
+          <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">Certification Details</h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text mb-2"><strong>Document Type:</strong> {{certificationRequest?.type}}</p>
+            <p class="card-text mb-2"><strong>Status:</strong> <span class=" badge rounded px-2 py-1" [ngClass]="{'bg-warning ':certificationRequest?.status=='Pending', 'bg-success':certificationRequest?.status=='Approved', 'bg-danger':certificationRequest?.status=='Rejected'}"> {{certificationRequest?.status}}</span></p>
+            <!-- Conditionally render the denied reason if it exists -->
+            <p *ngIf="certificationRequest?.denied_reason" class="card-text "><strong>Denied Reason:</strong>  {{certificationRequest?.denied_reason}}</p>
+          </div>
+
+        </div>
+        <div class="status-legend">
+          <h4 class="mb-3 mt-4">Status Legend</h4>
+          <div class="status-item d-flex align-items-center mt-3">
+            <p class="mb-0 "> <span class="badge bg-success me-3">Approved</span>
+           The request has been reviewed and officially accepted. You become a verified user</p>
+          </div>
+          <div class="status-item d-flex align-items-center mt-3">
+            <p class="mb-0"><span class="badge bg-danger me-3">Rejected</span>
+            The request  has been reviewed but does not meet the necessary criteria. It has been declined and you can make another request.</p>
+          </div>
+          <div class="status-item d-flex align-items-center mt-3">
+            <p class="mb-0"><span class="badge bg-warning  me-3">Pending</span>
+            The request is under review and no final decision has been made yet</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="certificationRequest?.status=='Pending' || certificationRequest?.status=='Rejected'" class="container-md text-lg-end mb-3 mt-3">
+        <button class="btn btn-danger btn-lg"  (click)="deleteCertification()">Delete request</button>
+      </div>
+    </div>
+
+  </div>

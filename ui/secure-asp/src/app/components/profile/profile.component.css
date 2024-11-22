@@ -1,0 +1,9 @@
+.grid-nav{
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+@media (max-width: 768px) {
+    .grid-nav {
+      display: block;
+    }
+  }

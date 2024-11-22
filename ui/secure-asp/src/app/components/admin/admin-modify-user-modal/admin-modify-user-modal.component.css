@@ -1,0 +1,13 @@
+input[type="checkbox"], input[type="radio"] {
+    width: 2em;
+    height: 2em;
+}
+.grid-nav{
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+@media (max-width: 700px) {
+    .grid-nav {
+      display: block;
+    }
+  }

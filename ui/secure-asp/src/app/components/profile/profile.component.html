@@ -1,0 +1,256 @@
+<div class="container-fluid min-vh-100">
+  <header class="jumbotron text-lg-start ">
+    <div class="row">
+      <div class="col-md-8">
+    <h1 class="display-4">{{ this.user.full_name }}</h1>
+  </div>
+  <div class="col-md-4">
+    <div class="d-flex flex-column-reverse">
+    <button class="btn btn-secondary mt-3 text-light" (click)="goToPublicProfile()">
+      <i class="fas fa-eye"></i> View Public Profile
+    </button>
+  </div>
+</div>
+  </div>
+  </header>
+  
+  <div class="grid-nav mt-3">
+      <div ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills flex-column " orientation="vertical" >
+        <ng-container ngbNavItem="userInfo">
+          <button ngbNavLink >Data</button>
+          <ng-template ngbNavContent >
+          <div class="card border-primary  " >
+
+            <div class="card">
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-sm-4"><strong>Email:</strong></div>
+                      <div class="col-sm-8">{{ user.email }}</div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-sm-4"><strong>Username:</strong></div>
+                      <div class="col-sm-8">{{ user.username }}</div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-sm-4"><strong>Full Name:</strong></div>
+                      <div class="col-sm-8">{{ user.full_name }}</div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-sm-4"><strong>Role:</strong></div>
+                      <div class="col-sm-8">
+                        {{ authService.isAdmin() ? 'Admin' : (authService.isAdminAndUser() ? 'User and Admin' : 'User') }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-sm-4"><strong>Login type:</strong></div>
+                      <div class="col-sm-8">
+                        {{ user.oauth2_user ? 'Oauth2' : 'Username and password'  }}
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+
+            <div class="card-footer">
+              <div class="row">
+                <div class="col d-flex justify-content-end">
+                  <button class="btn btn-primary me-2" *ngIf="!user.oauth2_user" (click)="openEditModal(editProfile)">Edit profile</button>
+                  <button class="btn btn-danger" (click)="openDeletionModal(deleteConfirmation)">Delete account</button>
+                </div>
+              </div>
+              </div>
+            </div>
+
+          </ng-template>
+        </ng-container>
+        <ng-container ngbNavItem="certification">
+          <button ngbNavLink >Certification</button>
+          <ng-template ngbNavContent>
+            <form [formGroup]="formUploadCertificate">
+            <div class="card border-primary mt-3 mb-3">
+              <div class="card-body">
+          
+                <!-- Case: Certified but no signed certificate yet (no CSR uploaded) -->
+                <div *ngIf="authService.isCertificated() && !authService.hasSignedCert()">
+                  <h4 class="card-title">Certificate Pending</h4>
+                  <p class="card-text">
+                    You are a certified user, but you haven't uploaded your CSR (Certificate Signing Request) yet. 
+                    Once your CSR is submitted and processed, you will receive your certificate, which is required to upload encodings.
+                  </p>
+                  <ul class="list-unstyled ms-3" style="list-style-type: disc;">
+                    <li> Uploading your CSR will allow you to obtain your certificate.</li>
+                    <li> Once certified, you can upload encodings seamlessly.</li>
+                  </ul>
+                </div>
+          
+                <!-- Case: Certified and CSR signed (active certificate) -->
+                <div *ngIf="authService.isCertificated() && authService.hasSignedCert()">
+                  <h4 class="card-title">Certificate Active</h4>
+                  <p class="card-text">
+                    Your certificate is active and valid. You can upload and manage your encodings.
+                  </p>
+                  <ul class="list-unstyled ms-3" style="list-style-type: disc;">
+                    <li>If you lose your certificate, you can upload a new CSR to obtain a new one.</li>
+                    <li>Be aware that all previously uploaded and signed encodings will be deleted once a new CSR is processed and the certificate is replaced.</li>
+                  </ul>
+                  
+                </div>
+          
+                <!-- Case: Not certified yet -->
+                <div *ngIf="!authService.isCertificated()">
+                  <h4 class="card-title">Not Certified</h4>
+                  <p class="card-text">
+                    You are not yet certified. Please complete the certification process to access your keys and start uploading encodings.
+                  </p>
+                </div>
+                
+              </div>
+          
+              <div class="card-footer bg-transparent d-flex justify-content-end">
+               
+                
+                <!-- Button to upload CSR if certified but no signed certificate -->
+                <!-- Input file con errori di validazione -->
+<div class="input-group mb-3" *ngIf="authService.isCertificated()">
+  <input accept=".pem" type="file" class="form-control " id="inputGroupFile" 
+         (change)="uploadCertFile($event)" 
+         [ngClass]="{'is-invalid':formUploadCertificate.get('certificate')?.hasError('max_size')}"
+      
+         >
+  
+  <button class="btn btn-primary me-2" type="button" (click)="uploadRequest()" [disabled]="this.formUploadCertificate.invalid">
+    Upload CSR
+  </button>
+
+<!-- Errore di dimensione file -->
+<div class="invalid-feedback" >
+  File size exceeds the limit (10MB).
+</div>
+</div>
+ 
+
+                
+                
+                <!-- Button to navigate to certification process if not certified -->
+                <a routerLink="/dashboard" class="btn btn-primary" *ngIf="!authService.isCertificated()">
+                  Get certified
+                </a>
+              </div>
+            </div>
+            </form>
+          </ng-template>
+          
+          
+          
+        </ng-container>
+      </div>
+        <div [ngbNavOutlet]="nav" class="ms-4"></div>
+  </div>
+
+</div>
+<ng-template #deleteConfirmation let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Profile deletion</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close button"
+      aria-describedby="modal-title"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <strong>Are you sure you want to delete <span class="text-primary">"{{user.username}}"</span> profile?</strong>
+    </p>
+    <p>
+      All information linked to this user profile, including all ASP encodings, will be permanently deleted, along with your keys.
+      <span class="text-danger"><strong>This operation can not be undone.</strong></span>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modal.dismiss('cancel click')">Cancel</button>
+    <button type="button"  class="btn btn-danger" (click)="modal.close('Delete click')">Delete</button>
+  </div>
+</ng-template>
+<ng-template #editProfile let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" class="needs-validation">
+      <div class="mb-3">
+        <label for="usernameForm" class="form-label">Username</label>
+        <input aria-describedby="usernameHelpBlock" maxlength="32" type="email" class="form-control" formControlName="username" id="usernameForm" [ngClass]="{'is-invalid':form.get('username')?.invalid && form.get('username')?.touched}">
+        <div id="usernameHelpBlock" class="form-text">
+          Your username must be 6-32 characters long  and can contain letters, numbers, and dash, and has to start with a letter.
+        </div>
+        <div *ngIf="form.get('username')?.hasError('minlength') || form.get('username')?.hasError('required')" class="invalid-feedback">
+          The username is required and cannot be under 6 characters.
+        </div>
+        <div *ngIf="form.get('username')?.hasError('pattern') && !(form.get('username')?.hasError('minlength'))" class="invalid-feedback">
+          The username is invalid.
+        </div>
+
+      </div>
+      <div class="mb-3">
+        <label for="full-name-form" class="form-label">Full name</label>
+        <input  maxlength="64" type="text" class="form-control" formControlName="fullName" id="full-name-form" [ngClass]="{'is-invalid':form.get('fullName')?.invalid && form.get('fullName')?.touched}">
+        <div *ngIf="form.get('fullName')?.hasError('minlength') || form.get('fullName')?.hasError('required')" class="invalid-feedback">
+          The full name is required and cannot be under 2 characters.
+        </div>
+        <div *ngIf="form.get('fullName')?.hasError('pattern') && !(form.get('fullName')?.hasError('minlength'))" class="invalid-feedback">
+          The full name has to start with a letter and can only contain letters, and spaces.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="emailForm" class="form-label">Email address</label>
+        <input maxlength="320" type="email" class="form-control" formControlName="email" id="emailForm" placeholder="name@example.com" [ngClass]="{'is-invalid':form.get('email')?.invalid && form.get('email')?.touched}">
+        <div  class="invalid-feedback">
+          The email is required and has to be a valid email.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="passwordForm" class="form-label d-flex justify-content-between">
+          New password
+        </label>
+        <input maxlength="64" aria-describedby="passwordHelpBlock" type="password" class="form-control" [ngClass]="{'is-invalid':form.get('password')?.invalid && form.get('password')?.touched}" formControlName="password" id="passwordForm"  >
+        <div id="passwordHelpBlock" class="form-text">
+          Your password must be 8-64 characters long and must contain one uppercase letter, one lowercase letter, one number, and one special character.
+        </div>
+        <div *ngIf="form.get('password')?.hasError('minlength') " class="invalid-feedback">
+          The password  cannot be under 8 characters.
+        </div>
+        <div *ngIf="form.get('password')?.hasError('pattern') && !(form.get('password')?.hasError('minlength'))" class="invalid-feedback">
+          The password is invalid.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="confirmPasswordForm" class="form-label d-flex justify-content-between">
+          Confirm Password
+        </label>
+        <input maxlength="64"  type="password" class="form-control" [ngClass]="{'is-invalid':form.get('confirmPassword')?.invalid }" formControlName="confirmPassword" id="confirmPasswordForm"  >
+        <div  class="invalid-feedback">
+          The passwords do not match.
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modal.dismiss('cancel click')">Cancel</button>
+    <button type="button"  class="btn btn-success" (click)="modal.close('Save click')" [disabled]="noChange() || form.invalid">Save</button>
+  </div>
+</ng-template>

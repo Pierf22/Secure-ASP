@@ -1,0 +1,11 @@
+<div class="container-fluid min-vh-100">
+  <header class="jumbotron text-lg-start" >
+    <h1 class="display-4">Dashboard</h1>
+  </header>
+<div  *ngIf="!this.isCertificated()" class="container-fluid">
+  
+  <app-certification-request-details></app-certification-request-details>
+
+
+</div>
+

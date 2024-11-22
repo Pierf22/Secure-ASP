@@ -1,0 +1,116 @@
+/* You can add global styles to this file, and also import other style files */
+
+$primary: #2B4F81; $secondary: #91732B;
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+.form-check-input.check:checked {
+  /* Colore quando è selezionato */
+  background-color: $secondary;
+}
+.nav-item:hover {
+  color: $secondary;
+}
+
+
+.link-primary:hover {
+  color: $secondary !important;
+  text-decoration: underline !important;
+}
+.btn:hover {
+  background-color: $secondary;
+  border-color: $secondary;
+}
+.hover-secondary:hover{
+  color: $secondary !important;
+
+}
+.hover-primary:hover{
+  color: $primary !important;
+  cursor: pointer;
+
+}
+button.swal2-confirm:hover{
+  background-color: $secondary !important;
+
+}
+.bg-orange{
+  background-color: darkorange;
+}
+$secondary-light: lighten($secondary, 45%);
+
+ .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  cursor: pointer;
+}
+
+[data-bs-theme="light"] .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: $secondary-light;
+
+}
+[data-bs-theme="dark"] .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: $secondary;
+
+}
+.ngb-dp-weekday {
+  color: $secondary !important;
+}
+.custom-day.focused {
+  background-color: $secondary;
+}
+[data-bs-theme="light"]  .custom-day.range,
+.custom-day:hover {
+  background-color: $primary;
+  color: white;
+}
+.custom-day.faded {
+  background-color: rgba(2, 117, 216, 0.5);
+}
+[data-bs-theme="light"] .filter-button.collapsed{
+  background-color: whitesmoke;
+}
+.filter-button.collapsed{
+  background-color: whitesmoke;
+}
+[data-bs-theme="dark"] .filter-button.collapsed{
+  background-color: #444444;
+}
+[data-bs-theme="dark"]  .custom-day.range,
+.custom-day:hover {
+  background-color: $primary;
+  color: black;
+}
+[data-bs-theme="dark"] .custom-iframe {
+  border: 2px solid $primary !important;
+  background-color: $body-bg-dark !important;
+  color: white;
+}
+
+
+[data-bs-theme="light"] .custom-iframe {
+  border: 2px solid $primary !important;
+  background-color: $body-bg !important;
+  color: black;
+}
+$primary_light: lighten($primary, 20%);
+.clickable:hover{
+  background-color: $secondary;
+}
+[data-bs-theme="dark"] .clickable:hover,
+[data-bs-theme="dark"] .clickable:hover * {
+  color: black;
+}
+[data-bs-theme="dark"] .code{
+  background-color: white;
+  color: $body-bg-dark;
+}
+[data-bs-theme="light"] .code{
+  background-color: $body-bg-dark;
+  color: white;
+}
+
+
+
+
+
+

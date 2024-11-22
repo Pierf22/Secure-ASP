@@ -1,0 +1,180 @@
+<div class="container-fluid min-vh-100">
+    <header class="jumbotron text-lg-start">
+        <h1 class="display-4">Encodings</h1>
+      </header>
+<div class="row justify-content-end ">
+    <div class="col-12 col-md-6 col-lg-4 d-flex flex-column-reverse">
+      <button *ngIf="authService.hasSignedCert()" type="button" class="btn btn-primary" (click)="openModalNewEncoding()">Upload a encoding</button>
+      <button *ngIf="!authService.hasSignedCert()" type="button" class="btn btn-primary" (click)="openNoSignedCert(NoSignedCert)">Upload a certification</button>
+    </div>
+
+  </div>
+  <div ngbAccordion class="mt-4">
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader >
+        <button ngbAccordionButton class="filter-button">Filter 🔎</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <form class="row " [formGroup]="this.searchForm">
+              <div class="col-12 col-md-4 ">
+                <label for="inputDate" >Upload date range</label>
+                    <div class="dp-hidden position-absolute ">
+                      <div class="input-group">
+                        <input
+                          name="datepicker"
+                          class="form-control"
+                          ngbDatepicker
+                          #datepicker="ngbDatepicker"
+                          [autoClose]="'outside'"
+                          (dateSelect)="onDateSelection($event)"
+                          [displayMonths]="1"
+                          [dayTemplate]="t"
+                          [maxDate]="today"                         
+                          outsideDays="hidden"
+                          [startDate]="fromDate!"
+                          tabindex="-1"
+                        />
+                        <ng-template #t let-date let-focused="focused">
+                          <span
+                            class="custom-day"
+                            [class.focused]="focused"
+                            [class.range]="isRange(date)"
+                            [class.faded]="isHovered(date) || isInside(date)"
+                            (mouseenter)="hoveredDate = date"
+                            (mouseleave)="hoveredDate = null"
+                          >
+                            {{ date.day }}
+                          </span>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <div class="input-group">
+                      <input
+                        #dpFromDate
+                        id="inputDate"
+                        class="form-control"
+                        placeholder="dd/mm/yyyy - dd/mm/yyyy"
+                        name="dpFromDate"
+                        [value]="format(toDate)"
+                        (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
+                      />
+                      <button class="btn btn-outline-primary " (click)="datepicker.toggle()" type="button"><i class="fa-regular fa-calendar"></i></button>
+                    </div>
+              </div>
+              <div class="col-sm-12 col-md-4">
+                <label for="inputName">Name</label>
+                <input type="text" class="form-control " placeholder="Name" formControlName="name" id="inputName"/>
+              </div>
+              <div class="col-sm-12 col-md-4">
+                <label for="inputTag">Tags</label>
+                <div class="input-group">
+                <input type="text" class="form-control " #tagInput placeholder="tags" id="inputTag"   (keydown.enter)="addTag(tagInput)"/>
+                <button type="button" class="btn btn-primary" (click)="addTag(tagInput)">Add</button>
+              </div>
+              <div class="d-flex flex-wrap" style="gap: 4px; max-width: 200px; overflow-x: auto; margin-top: 10px;">
+                <div *ngFor="let tag of getTagArray().controls; let i=index" (click)="deleteTag(i)" class="sort" title="delete">
+                  <span class="badge" [ngClass]="'bg-' + getTagColor(tag.value.name)" style="white-space: nowrap;">
+                    {{ tag.value.name }}
+                  </span>
+                </div>
+              </div>
+              </div>
+          </form>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4 m-2">
+  <table class="table table-hover ">
+    <thead>
+      <tr>
+        <th scope="col"  class="sort" (click)="this.fetchEncodings(1, this.pageSize, this.changeSort('upload-date'), this.changeOrder())">Upload
+          <i *ngIf="this.ascSort('upload-date')" class="fas fa-arrow-up"></i>  
+          <i *ngIf="this.descSort('upload-date')" class="fas fa-arrow-down"></i>
+        </th>
+        <th scope="col"  class="sort" (click)="this.fetchEncodings(1, this.pageSize, this.changeSort('name'), this.changeOrder())">Name
+          <i *ngIf="this.ascSort('name')" class="fas fa-arrow-up"></i>  
+          <i *ngIf="this.descSort('name')" class="fas fa-arrow-down"></i>
+        </th>
+        <th scope="col"  class="sort" (click)="this.fetchEncodings(1, this.pageSize, this.changeSort('visibility'), this.changeOrder())">Visibility
+          <i *ngIf="this.ascSort('visibility')" class="fas fa-arrow-up"></i>  
+          <i *ngIf="this.descSort('visibility')" class="fas fa-arrow-down"></i>
+        </th>
+        <th scope="col"  class="sort d-none d-sm-table-cell" (click)="this.fetchEncodings(1, this.pageSize, this.changeSort('role'), this.changeOrder())">Role
+          <i *ngIf="this.ascSort('role')" class="fas fa-arrow-up"></i>  
+          <i *ngIf="this.descSort('role')" class="fas fa-arrow-down"></i>
+        </th>
+        <th scope="col" class=" d-none d-sm-table-cell">Tags</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let encoding of encodings.items" (click)="openEncodingInfo(encoding.encoding)">
+        <td>{{encoding.encoding.upload_date}}</td>
+        <td>{{encoding.encoding.name}}</td>
+        <td  class="d-none d-sm-table-cell">
+          <i [ngClass]="encoding.encoding.is_public ? 'fa-solid fa-users' : 'fa-solid fa-lock'" 
+          [title]="encoding.encoding.is_public ? 'Public' : 'Private'">
+       </i>
+       <span class="ms-2">
+        {{ encoding.encoding.is_public ? 'Public' : 'Private' }}
+      </span>
+        </td>
+        <td>
+          <i class="fa-solid"
+          [class.fa-user]="encoding.ownership.toString() === 'Owner'"
+          [class.fa-share-alt]="encoding.ownership.toString() === 'Shared'">
+       </i>
+       
+            <span class="ms-2">
+              {{ encoding.ownership.toString() === 'Owner' ? 'Owner' :
+                 encoding.ownership.toString() === 'Shared' ? 'Shared' : '' }}
+            </span>
+          
+        </td>
+        <td class="d-none d-sm-table-cell">
+          <div class="d-flex flex-wrap" style="gap: 4px; max-width: 200px; overflow-x: auto;">
+            <div *ngFor="let tag of encoding.encoding.tags">
+              <span class="badge" [ngClass]="'bg-' + getTagColor(tag.name)" style="white-space: nowrap;">
+                {{ tag.name }}
+              </span>
+            </div>
+          </div>
+        </td>
+        
+      </tr>
+    </tbody>
+  </table>  
+  <nav aria-label="Users navigation" class=" d-flex justify-content-center">
+    <ngb-pagination [collectionSize]="encodings.total" [page]="encodings.page" [pageSize]="encodings.size" (pageChange)="this.fetchEncodings($event, this.pageSize, this.sort, this.order)"/>
+  </nav>
+</div>
+</div>
+<ng-template #NoSignedCert let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      <i class="bi bi-shield-lock-fill me-2"></i> Encoding Upload
+    </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  
+  <div class="modal-body">
+    <p class="mb-3">
+      To upload an encoding, you must first obtain a valid certificate that has been signed by the server's Certificate Authority (CA). This certificate is essential for ensuring secure communication and verifying your identity.
+    </p>
+    <p class="mb-3">
+      Please visit the profile section to upload your CSR request. Once the certificate is signed, you can upload your encoding.
+    </p>
+  </div>
+  
+  <div class="modal-footer">
+  
+    <button type="button" class="btn btn-primary" (click)="navigateToProfile(modal)">
+      Go to Profile
+    </button>
+    
+  </div>
+</ng-template>
+

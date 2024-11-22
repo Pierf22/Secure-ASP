@@ -1,0 +1,8 @@
+.nav-link:hover{
+  cursor: pointer;
+}
+@media (max-width: 560px) {
+  .responsive-img {
+    display: none;
+  }
+}

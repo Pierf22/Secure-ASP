@@ -1,0 +1,176 @@
+<div class="modal-header">
+    <h4 class="modal-title">Encoding upload</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <ngb-progressbar class="mb-3" type="success" textType="white" [value]="active">Step {{this.active/25}} of 4</ngb-progressbar>
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+    <li [ngbNavItem]="25">
+      <button ngbNavLink >
+        <span *ngIf="!isGeneralInfoError()" > General Info</span>
+  <span *ngIf="isGeneralInfoError()" class="text-danger" title="missing or invalid data"> General Info <i class="fas fa-exclamation-circle"></i></span>
+</button>
+      <ng-template ngbNavContent>
+        <div class="alert alert-info" role="alert">
+          <h4 class="alert-heading">Encoding Information:</h4>
+          <p>
+            Please provide the <strong>name</strong> and <strong>description</strong> for the file.
+          </p>
+        </div>
+        <form [formGroup]="this.form">
+          <div class="form-group">
+            <label for="name">Name<span class="text-danger" title="required">*</span></label>
+            <input type="text" class="form-control" id="name" maxLength="32" formControlName="name" placeholder="encoding name" [ngClass]="{'is-invalid':form.get('name')?.invalid && form.get('name')?.touched}">
+            <div *ngIf="form.get('name')?.hasError('minlength') || form.get('name')?.hasError('required')" class="invalid-feedback">
+              The name for the encoding is required and cannot be under 2 characters.
+            </div>
+            <div *ngIf="form.get('name')?.hasError('pattern') && !(form.get('name')?.hasError('minlength'))" class="invalid-feedback">
+              The name for the encoding is invalid.
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <label for="descriptionTextArea">Description<span class="text-danger" title="required">*</span></label>
+            <textarea class="form-control" id="descriptionTextArea" rows="3" formControlName="description" maxlength="256" placeholder="encoding features" [ngClass]="{'is-invalid':form.get('description')?.invalid && form.get('description')?.touched}"></textarea>
+            <div  class="invalid-feedback">
+              The description for the encoding must at least be 6 characters long.
+            </div>
+          </div>
+          <div class="form-check mt-3 form-switch">
+            <input class="form-check-input " type="checkbox" role="switch" formControlName="isPublic" id="publicRadio">
+            <label class="form-check-label" for="publicRadio">
+              Public
+            </label>
+          </div>
+          <div class="alert alert-secondary mt-3" role="alert" *ngIf="form.get('isPublic')?.value">
+            Setting the encoding to public will allow other users to view in your profile. 
+          </div>
+        </form>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="50">
+      <button ngbNavLink (click)="button50Clicked=true">
+        <span *ngIf="!isFileError()" >File upload</span>
+        <span *ngIf="isFileError()" class="text-danger" title="missing or invalid data">File upload <i class="fas fa-exclamation-circle"></i></span>
+      </button>
+      <ng-template ngbNavContent>
+        <form [formGroup]="this.form">
+        <div class="alert alert-info" role="alert">
+          <h4 class="alert-heading">Sing the encoding</h4>
+          The signature file you need to upload must be the result of signing your document using your private key. You can download the private key from your personal area, and use it to generate the signature.                </div>
+        <label for="encodingFile">Encoding<span class="text-danger" title="required">*</span></label>
+        <div class="input-group ">
+          <input   type="file" class="form-control" aria-describedby="documentHelpBlock"  id="encodingFile" (change)="saveFile($event)" [ngClass]="{'is-invalid':form.get('encoding')?.hasError('max_size') || form.get('encoding')?.hasError('invalid_extension')}">
+          <div class="invalid-feedback"   *ngIf="form.get('encoding')?.hasError('max_size') ">
+            File size exceeds the limit
+          </div>
+          <div class="invalid-feedback"   *ngIf="form.get('encoding')?.hasError('invalid_extension') ">
+            Invalid file extension
+            </div>
+  
+        </div>
+        <div id="documentHelpBlock" class="form-text mb-3">
+          Your documents must be in ASP, TXT, or empty file extension format and not exceed 100MB.
+        </div>
+        <label for="signatureFile">Signature<span class="text-danger" title="required">*</span></label>
+        <div class="input-group ">
+          <input accept=".bin,.sig,.sign, .sha256"  type="file" class="form-control" aria-describedby="signatureHelpBlock"  id="signatureFile" (change)="saveFileSignature($event)" [ngClass]="{'is-invalid':form.get('signature')?.hasError('max_size') || form.get('signature')?.hasError('invalid_extension')}">
+          <div class="invalid-feedback"   *ngIf="form.get('signature')?.hasError('max_size') ">
+            File size exceeds the limit
+          </div>
+          <div class="invalid-feedback"   *ngIf="form.get('signature')?.hasError('invalid_extension') ">
+            Invalid file extension
+            </div>
+  
+        </div>
+        <div id="signatureHelpBlock" class="form-text">
+          Your documents must be in BIN, SIG, SHA256 or SIGN file extension format and not exceed 1MB.
+        </div>
+      </form>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="75" (click)="firstClickTeams()">
+      <button ngbNavLink>Team</button>
+      <ng-template ngbNavContent>
+        <div class="alert alert-info" role="alert">
+          <h4 class="alert-heading">Access Rights</h4>
+          <p>
+            A <strong>shared</strong> user can view the encoding.
+          </p>
+        </div>
+        <label for="emailInput">Add another user</label>
+        <div class="input-group mb-3">
+          <input type="text" #usernameInput [editable]="false" class="form-control" placeholder="Add username" aria-label="Add a user" maxlength="32" [(ngModel)]="modelTeam" [ngbTypeahead]="searchUser">
+      
+          <button class="btn btn-primary" type="button" (click)="addAUser(usernameInput)" [disabled]="!this.modelTeam || this.userAlreadyAdd()">Add</button>
+
+        </div>
+        <div>
+          <h4>Users</h4>
+          <table class="table table-striped ">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of getCollaboratorsArray().controls; let i=index">
+                <td>{{ user.value.username }}</td>
+                
+                <td >
+                  <button class="btn btn-danger btn-sm" type="button" (click)="deleteUser(i)"><i class="fas fa-trash-alt"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
+
+        </div>
+        
+      </ng-template>
+
+    </li>
+    <li [ngbNavItem]="100">
+      <button ngbNavLink>Tags</button>
+      <ng-template ngbNavContent>
+        <div class="alert alert-info" role="alert">
+          <h4 class="alert-heading">Add Tags</h4>
+          <p>
+            Tags are <strong>keywords</strong> that help you and others categorize and find your files easily.
+          </p>
+        </div>
+        <label for="tagInput">Add a new tag</label>
+        <div class="input-group mb-3">
+          <input type="text" #tagInput  class="form-control" placeholder="Add tag" aria-label="Add a tag" maxlength="32" [(ngModel)]="modelTags" [ngbTypeahead]="searchTag">
+          <button class="btn btn-primary" type="button" (click)="addATag(tagInput)" [disabled]="!this.modelTags || this.tagAlreadyAdd()">Add</button>
+
+        </div>
+          <h4>Tags</h4>
+          <table class="table table-striped ">
+            <thead>
+              <tr>
+                <th >Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of getTagArray().controls; let i=index">
+                <td >{{ user.value.name }}</td>
+
+                <td >
+                  <button class="btn btn-danger btn-sm" type="button" (click)="deleteTag(i)"><i class="fas fa-trash-alt"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>
+<div class="modal-footer d-flex justify-content-between">
+  <button type="button" class="btn btn-primary" (click)="active=active-25" [disabled]="active==25">Previous</button>
+   <button type="button" class="btn btn-success" [disabled]="form.invalid" (click)="saveEncoding()">Save</button>
+   <button type="button" class="btn btn-primary" (click)="active=active+25" [disabled]="active==100">Next</button>
+</div>

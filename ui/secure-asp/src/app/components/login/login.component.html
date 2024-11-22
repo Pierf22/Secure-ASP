@@ -1,0 +1,39 @@
+<div class="container-fluid  min-vh-100 pt-5 ">
+  <div class="container-md  p-5 rounded shadow-lg bg-body-secondary mb-5">
+    <header class="text-center mb-4">
+      <h1 class="text-primary"><strong>Welcome Back!</strong></h1>
+      <p class="mt-2">If you don't have an account, you can <a routerLink="/sign-up" class="link-primary">register here</a>.</p>
+    </header>
+    <form [formGroup]="form" (ngSubmit)="login()" class="needs-validation">
+      <div class="mb-3">
+        <label for="usernameForm" class="form-label">Username</label>
+        <input id="username" maxlength="32" name="username" type="text" class="form-control" autocomplete="username" formControlName="username" id="usernameForm" [ngClass]="{'is-invalid':form.get('username')?.invalid && form.get('username')?.touched}">
+        <div  class="invalid-feedback">
+          The username is required and cannot be under 6 characters.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="passwordForm" class="form-label d-flex justify-content-between">
+          <span>Password</span>
+        </label>
+      <input maxlength="64" type="password" name="password" autocomplete="current-password" class="form-control" [ngClass]="{'is-invalid':form.get('password')?.invalid && form.get('password')?.touched}" formControlName="password" id="passwordForm"  >
+        <div  class="invalid-feedback">
+          The password is required and cannot be under 8 characters.
+        </div>
+      </div>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary btn-lg" [disabled]="form.invalid">Login</button>
+      </div>
+    </form>
+    <div class="d-flex align-items-center my-4">
+      <hr class="flex-grow-1">
+      <span class="mx-2">or</span>
+      <hr class="flex-grow-1">
+    </div>
+    <div class="text-center mt-4">
+      <button class="btn  btn-lg" (click)="this.loginService.oauthLogin()" [ngClass]="{'btn-outline-light':theme.darkMode(), 'btn-outline-dark':!theme.darkMode()}">
+        <i class="fa-brands fa-github"></i> Login via GitHub
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+<div  class="container-fluid  min-vh-100 pt-3">
+    <div *ngIf="!noEncoding; else encodingNotFoundTemplate">
+      <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+        <li [ngbNavItem]="1">
+          <button ngbNavLink>Encoding</button>
+          <ng-template ngbNavContent>
+            <div class="row mt-4">
+              <!-- Left Column -->
+              <div class="col-md-4 mb-3">
+                <div class="border rounded shadow-sm p-4">
+                  <h3 class="mb-1 text-wrap" style="word-wrap: break-word; word-break: break-all;">
+                    {{ encoding?.name }}
+                  </h3>
+                  <p class="mb-1 text-muted text-wrap" style="word-wrap: break-word; word-break: break-all;">
+                    {{ encoding?.owner_username }}
+                  </p>
+                  <p class="mb-1 text-muted">
+                    Status: 
+                    <span class="fw-bold">
+                      {{ encoding?.is_public ? 'Public' : 'Private' }}
+                    </span>
+                  </p>
+          
+                  <div class="mt-4">
+                    <div class="d-flex flex-row flex-fill w-100">
+                      <button class="btn btn-primary btn-sm w-100 shadow" (click)="downloadFile(encoding?.file_url)" title="Download file">
+                        <i class="fa fa-download"></i> Download File
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Right Column -->
+              <div class="col-md-8 mb-3">
+                <div class="border rounded shadow-sm p-4">
+                  <h5 class="mb-3">Description</h5>
+                  <p>{{ encoding?.description }}</p>
+          
+                  <!-- Tags Section -->
+                  
+                  <div class="d-flex flex-wrap gap-2 mt-4">
+                    <div *ngFor="let tag of encoding?.tags">
+                      <span class="badge" [ngClass]="'bg-' + getTagColor(tag.name)" style="white-space: nowrap; font-size: 0.85rem; padding: 0.5rem 1rem;">
+                        {{ tag.name }}
+                      </span>
+                    </div>
+                  </div>
+          
+             
+                </div>
+              </div>
+          
+              <!-- Changes Section -->
+              <div class="col-md-12 mb-3">
+                <div class="border rounded shadow-sm p-4 mt-5" style="min-height: 50vh; display: flex; flex-direction: column;">
+                  <h5 class="mb-3">Changes</h5>
+          
+                  <div style="flex-grow: 1;">
+                    <div *ngFor="let change of changes.items" class="border rounded shadow-sm p-3 mb-3">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-primary">{{ change.updated_by }}</span>
+                        <small class="text-muted">{{ change.timestamp | date: 'short' }}</small>
+                      </div>
+                      <p class="mt-2">{{ change.description }}</p>
+                    </div>
+                  </div>
+          
+                  <!-- Pagination Section -->
+                  <nav aria-label="Users navigation" class="d-flex justify-content-center mt-3">
+                    <ngb-pagination [collectionSize]="changes.total" [page]="changes.page" [pageSize]="changes.size" (pageChange)="changePage($event)">
+                    </ngb-pagination>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          
+        </li>
+        <li [ngbNavItem]="2" *ngIf="this.notAuthAndOwner()">
+          <button ngbNavLink>Settings</button>
+          <ng-template ngbNavContent>
+           <app-encoding-settings [encoding]="encoding"></app-encoding-settings>
+          </ng-template>
+        </li>
+
+      </ul>
+      
+      <div [ngbNavOutlet]="nav" class="mt-2"></div>
+    </div>
+</div>
+
+
+<ng-template #encodingNotFoundTemplate>
+    <div class="container mt-4">
+      <div class="alert alert-danger" role="alert">
+        Encoding not found
+      </div>
+    </div>
+</ng-template>
