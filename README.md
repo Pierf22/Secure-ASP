@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="secure-asp-high-resolution-logo.png" alt="Secure-ASP Logo" style="width: 100%; height: auto; max-height: 400px;">
+  <img src="secure-asp-high-resolution-logo.png" alt="Secure-ASP Logo" style="width: 600px; height: auto; max-height: 400px;">
 </p>
 
 
@@ -13,7 +13,7 @@ This thesis focuses on the development of an application designed to securely ma
 #  Demo Video 
 <div align="center">
   <a href="https://youtu.be/pJM62NRlVhI">
-    <img src="https://img.youtube.com/vi/pJM62NRlVhI/0.jpg" alt="Guarda il video su YouTube" width="100%">
+    <img src="https://img.youtube.com/vi/pJM62NRlVhI/0.jpg" alt="Guarda il video su YouTube" width="600px">
   </a>
 </div>
 
