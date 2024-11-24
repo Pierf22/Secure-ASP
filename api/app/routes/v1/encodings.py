@@ -99,7 +99,7 @@ async def get_encoding_file(
         for user_encoding in encoding.user_encodings:
             if user_encoding.user_id == auth.id:
                 headers = {
-                "Content-Disposition": f'attachment; filename="{encoding.name.strip()+"_encrypted.asp"}"'
+                "Content-Disposition": f'attachment; filename="{encoding.name.replace(" ", "-")+"_encrypted.asp"}"'
                  }
                 logger.info(f"Getting encoding file for user '{encoding.file}'")
                 return StreamingResponse(
@@ -108,7 +108,7 @@ async def get_encoding_file(
         raise AuthorizationException()
 # set the file name to the original file name
     headers = {
-        "Content-Disposition": f'attachment; filename="{encoding.name.strip()+"_encrypted.asp"}"'
+        "Content-Disposition": f'attachment; filename="{encoding.name.replace(" ", "-")+"_encrypted.asp"}"'
     }
     logger.info(f"Getting encoding file for user '{auth.username}'")
 
