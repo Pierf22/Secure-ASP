@@ -109,7 +109,7 @@ this.encodingService.downloadFile(fileUrl).subscribe(
   (response: HttpResponse<Blob>) => {
     // Extract filename from Content-Disposition header if available
     const contentDisposition = response.headers.get('Content-Disposition');
-    let fileName = this.encoding?.name+'_encrypted.asp'; // Default filename if none is provided
+    let fileName = this.encoding?.name.replaceAll(' ', '-')+'_encrypted.asp'; // Default filename if none is provided
 
     // Parse filename from Content-Disposition header
     if (contentDisposition && contentDisposition.includes('filename=')) {
