@@ -1,6 +1,8 @@
 <p align="center">
-  <img src="secure-asp-high-resolution-logo.png" alt="Secure-ASP Logo" width="100%" height="auto">
+  <img src="secure-asp-high-resolution-logo.png" alt="Secure-ASP Logo" style="width: 100%; height: auto; max-height: 400px;">
 </p>
+
+
 
 ##
 
