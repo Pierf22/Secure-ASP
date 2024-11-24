@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="secure-asp-high-resolution-logo.png" alt="Secure-ASP Logo" width="300" height="auto">
+  <img src="secure-asp-high-resolution-logo.png" alt="Secure-ASP Logo" width="100%" height="auto">
 </p>
 
 ##
